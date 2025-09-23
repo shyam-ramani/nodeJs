@@ -14,7 +14,7 @@ const currency = () => {
         });
         res.on('end', () => {
             const exchangeRates = JSON.parse(data);
-
+              console.log(exchangeRates.rates);
             rl.question("Enter amount usd: ", (amount) => {
                 rl.question("Convert to: ", (currency) => {
                     const rate = exchangeRates.rates[currency.toUpperCase()];

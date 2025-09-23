@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home</title>
+</head>
+<body>
+  <h1>Hello, Express + EJS!</h1>
+  <div>
+    <div>
+      <form action="/create" method="post">
+        <label for="filename">Filename:</label>
+        <input type="text" name="filename" required>
+
+        <label for="content">Content:</label>
+        <input type="text" name="content" required>
+
+        <button type="submit">Create Task</button>
+      </form>
+    </div>
+
+    <h3>Tasks:</h3>
+
+    <% if (files.length > 0) { %>
+      <div>
+        <ul>
+          <% files.forEach((file) => { %>
+            <li>
+              <a href="/files/<%= file %>"><%= file %></a>
+              <a href="/rename/<%= file %>">Rename</a>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } else { %>
+      <p>No tasks found.</p>
+    <% } %>
+  </div>
+</body>
+</html>

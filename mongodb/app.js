@@ -36,6 +36,17 @@ app.get("/delete/:id", async (req, res) => {
   await user.findByIdAndDelete(id);
   res.redirect("/read");
 });
+app.get("/edit/:id", async (req, res) => {
+  const { id } = req.params;
+  const foundUser = await user.findById(id);
+  res.render("edit", { user: foundUser });
+});
+
+app.post("/update", async (req, res) => {
+     const { id, name, email, photo } = req.body;
+     await user.findByIdAndUpdate(id, { name, email, photo });
+     res.redirect("/read");
+})
 
 
 app.listen(3000, () => {

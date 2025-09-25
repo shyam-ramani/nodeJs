@@ -1,24 +1,43 @@
-import express from 'express';
-import userModel from './usermodel.js';
+import express from "express";
+import mongoose from "mongoose";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import { user } from "./models/user.js";
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send("hello world");
-});
-app.get('/create', async (req, res) => {
-    const user = await userModel.create({
-        username: "hassan",
-        email: "hassan@.com",
-        password: "1234"
-    })
-    res.send(user);
-})
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-app.get('/update', async (req, res) => {
-    const updatedUser = await userModel.findOneAndUpdate({ username: "hassan" }, { email: "hassan@.com" }, { new: true });
-    res.send(updatedUser);
-})
+app.set("view engine", "ejs");
+app.set("views", join(__dirname, "views"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(join(__dirname, "public")));
+
+
+app.get("/", (req, res) => {
+  res.render("index");
+});
+
+app.get("/read", async (req, res) => {
+  const users = await user.find();
+  res.render("read", { users });
+});
+
+app.post("/create", async (req, res) => {
+  const { name, email, photo } = req.body;
+  const newUser = new user({ name, email, photo });
+  await newUser.save();
+  res.redirect("/read");
+});
+app.get("/delete/:id", async (req, res) => {
+  const id = req.params.id;
+  await user.findByIdAndDelete(id);
+  res.redirect("/read");
+});
+
+
 app.listen(3000, () => {
-    console.log("Listening on port 3000");
+  console.log("🚀 Server running on http://localhost:3000");
 });

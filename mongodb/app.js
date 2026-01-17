@@ -10,9 +10,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 app.set("view engine", "ejs");
-app.set("views", join(__dirname, "views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.set("views", join(__dirname, "views"));
 app.use(express.static(join(__dirname, "public")));
 
 
@@ -43,9 +43,9 @@ app.get("/edit/:id", async (req, res) => {
 });
 
 app.post("/update", async (req, res) => {
-     const { id, name, email, photo } = req.body;
-     await user.findByIdAndUpdate(id, { name, email, photo });
-     res.redirect("/read");
+  const { id, name, email, photo } = req.body;
+  await user.findByIdAndUpdate(id, { name, email, photo });
+  res.redirect("/read");
 })
 
 
